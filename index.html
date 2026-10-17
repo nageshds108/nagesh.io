@@ -66,7 +66,11 @@
     padding:9px 18px;border-radius:100px;font-size:13.5px;font-weight:600;
   }
   .nav-cta:hover{background:var(--accent);}
-  .navtoggle{display:none;}
+  .navtoggle{
+    display:none;align-items:center;justify-content:center;
+    width:42px;height:42px;border:1px solid var(--line);border-radius:8px;
+    background:var(--card);color:var(--ink);font-size:22px;cursor:pointer;
+  }
 
   /* ---- HERO ---- */
   .hero{padding:96px 0 80px;position:relative;overflow:hidden;}
@@ -208,6 +212,8 @@
   .strength{background:var(--card);padding:26px 22px;}
   .strength .n{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:10px;}
   .strength .t{font-weight:600;font-size:14.5px;}
+  .strength .t a{color:var(--accent);margin-left:5px;white-space:nowrap;}
+  .strength .t a:hover{color:var(--ink);}
 
   .lang-row{margin-top:40px;display:flex;gap:40px;flex-wrap:wrap;}
   .lang-item .k{font-family:var(--mono);font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
@@ -238,7 +244,45 @@
     .skill-row{grid-template-columns:1fr;}
     .skill-label{border-right:none;border-bottom:1px solid var(--line);padding-bottom:12px;}
     .strengths{grid-template-columns:repeat(2,1fr);}
-    .navlinks{display:none;}
+    nav.wrap{position:relative;}
+    .navtoggle{display:inline-flex;}
+    .navlinks{
+      display:none;position:absolute;top:calc(100% - 1px);left:16px;right:16px;
+      flex-direction:column;align-items:stretch;gap:0;padding:8px;
+      background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+      box-shadow:0 8px 24px rgba(16,21,31,0.12);
+    }
+    .navlinks.is-open{display:flex;}
+    .navlinks a{padding:11px 12px;}
+    .navlinks .nav-cta{margin-top:4px;text-align:center;}
+  }
+
+  @media (max-width:480px){
+    .wrap{padding:0 18px;}
+    nav.wrap{height:64px;}
+    .hero{padding:64px 0 56px;}
+    .hero h1{font-size:clamp(34px,10vw,44px);}
+    .hero p.lede{font-size:16px;}
+    section{padding:58px 0;}
+    .section-sub{font-size:14.5px;}
+    .edu-item{padding:18px;}
+    .edu-item .row{align-items:flex-start;flex-direction:column;gap:8px;}
+    .skill-matrix,.proj-list,.strengths,.contact-panel{margin-top:32px;}
+    .skill-tags{gap:7px;padding:14px 16px;}
+    .tag{font-size:12.5px;padding:6px 10px;}
+    .proj-card{padding:22px;}
+    .proj-title{font-size:18px;}
+    .strengths{grid-template-columns:1fr;}
+    .strength{padding:20px;}
+    .lang-row{gap:24px;}
+    .contact-panel{padding:24px 20px;gap:28px;}
+    .contact-panel h3{font-size:23px;}
+    .contact-row{align-items:flex-start;gap:12px;font-size:13.5px;}
+    .contact-row a{overflow-wrap:anywhere;text-align:right;}
+    .contact-row .k{flex:0 0 auto;}
+    .btn{padding:12px 16px;font-size:13.5px;}
+    footer{padding:26px 18px;}
+    footer p{font-size:11px;}
   }
 
   footer{padding:32px 0;text-align:center;}
@@ -250,13 +294,14 @@
 <header>
   <nav class="wrap">
     <div class="brand">N<span>.</span>D<span>.</span>Shete</div>
-    <div class="navlinks">
+    <div class="navlinks" id="primary-navigation">
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
       <a href="#projects">Projects</a>
       <a href="#education">Education</a>
       <a href="#contact" class="nav-cta">Get in touch</a>
     </div>
+    <button class="navtoggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-navigation">☰</button>
   </nav>
 </header>
 
@@ -313,7 +358,7 @@
         <div class="skill-row">
           <div class="skill-label">Backend</div>
           <div class="skill-tags">
-            <span class="tag">Node.js</span><span class="tag">Express.js</span><span class="tag">REST APIs</span><span class="tag">FastAPI</span>
+            <span class="tag">Node.js</span><span class="tag">Express.js</span><span class="tag">REST APIs</span>
           </div>
         </div>
        
@@ -354,7 +399,7 @@
         <div class="proj-card">
           <div class="proj-index">02</div>
           <div>
-            <div class="proj-title">Sherpa AI — Interview Preparation Platform</div>
+            <div class="proj-title">Interview Preparation Platform</div>
             <p class="proj-desc">Upload a resume and job description to generate AI-powered interview prep reports via the Google Gemini API — match scoring, skill-gap analysis, Q&amp;A, and exportable PDFs. JWT-secured routes on both client and server, with a dark-themed React UI built on Context API.</p>
             <div class="proj-stack">
               <span class="stack-chip">React.js</span><span class="stack-chip">Node.js</span><span class="stack-chip">MongoDB</span><span class="stack-chip">Gemini API</span><span class="stack-chip">Puppeteer</span>
@@ -366,7 +411,7 @@
         <div class="proj-card">
           <div class="proj-index">03</div>
           <div>
-            <div class="proj-title">Hostello — Hostel Listing Platform</div>
+            <div class="proj-title">Hostel Listing Platform</div>
             <p class="proj-desc">A full-stack platform for exploring hostels through detailed, structured listings. Complete CRUD with session-based auth, Cloudinary-optimized image uploads, and Mapbox-powered location discovery.</p>
             <div class="proj-stack">
               <span class="stack-chip">Node.js</span><span class="stack-chip">Express.js</span><span class="stack-chip">MongoDB</span><span class="stack-chip">EJS</span><span class="stack-chip">Cloudinary</span><span class="stack-chip">Mapbox</span>
@@ -393,12 +438,12 @@
 
   <section>
     <div class="wrap">
-      <h2 class="section-title">Certifications, strengths, and how I work.</h2>
+      <h2 class="section-title">Certifications &amp; strengths.</h2>
       <div class="strengths">
-        <div class="strength"><div class="n">Certification</div><div class="t">Full Stack Web Development — Apna College</div></div>
+        <div class="strength"><div class="n">Certification</div><div class="t">Full Stack Web Development — Apna College <a href="https://drive.google.com/file/d/1SNcNSfcyGWrmFUyCdl8tBox9qiTs7_4c/view?usp=drive_link" target="_blank" rel="noopener" aria-label="View certificate">↗</a></div></div>
         <div class="strength"><div class="n">Strength</div><div class="t">Problem-solving</div></div>
         <div class="strength"><div class="n">Strength</div><div class="t">Analytical thinking</div></div>
-        <div class="strength"><div class="n">Strength</div><div class="t">Quick learner &amp; team player</div></div>
+        <div class="strength"><div class="n">Strength</div><div class="t">Quick learner</div></div>
       </div>
    
     </div>
@@ -429,5 +474,24 @@
   <p>© 2026 Nagesh D. Shete — built with intent, deployed with care.</p>
 </footer>
 
+<script>
+  const navToggle = document.querySelector('.navtoggle');
+  const navLinks = document.querySelector('.navlinks');
+
+  navToggle.addEventListener('click', () => {
+    const isOpen = navToggle.getAttribute('aria-expanded') === 'true';
+    navToggle.setAttribute('aria-expanded', String(!isOpen));
+    navToggle.setAttribute('aria-label', isOpen ? 'Open navigation' : 'Close navigation');
+    navLinks.classList.toggle('is-open', !isOpen);
+  });
+
+  navLinks.addEventListener('click', (event) => {
+    if (event.target instanceof HTMLAnchorElement) {
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.setAttribute('aria-label', 'Open navigation');
+      navLinks.classList.remove('is-open');
+    }
+  });
+</script>
 </body>
 </html>
